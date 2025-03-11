@@ -59,8 +59,8 @@ public class AccountController {
         return accountEntity.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("account/inactivate")
-    public ResponseEntity<Account> inactivateAccount(@RequestParam int accountId) {
+    @PutMapping("account/inactivate/{accountId}")
+    public ResponseEntity<Account> inactivateAccount(@PathVariable int accountId) {
         log.info("Inactivating account");
         Account account = getAccount(accountId);
         account.setActive(false);

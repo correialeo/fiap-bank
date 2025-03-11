@@ -1,6 +1,7 @@
 package br.com.fiap.bank.controllers;
 
 import br.com.fiap.bank.models.Account;
+import br.com.fiap.bank.DTOs.PixDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -86,13 +87,13 @@ public class AccountController {
     }
 
     @PutMapping("/account/pix")
-    public ResponseEntity<Account> transferPix(@RequestParam int accountId, @RequestParam int pixAccountId, @RequestParam Double amount) {
-        log.info("Transfering pix from account " + accountId + " to account " + pixAccountId);
-        Account account = getAccount(accountId);
-        if(account.getBalance() >= amount){
-            Account pixAccount = getAccount(pixAccountId);
-            account.setBalance(account.getBalance() - amount);
-            pixAccount.setBalance(pixAccount.getBalance() + amount);
+    public ResponseEntity<Account> transferPix(@RequestBody PixDTO pixData) {
+        log.info("Transfering "+ pixData.amount() +" from account " + pixData.accountId() + " to account " + pixData.pixAccountId());
+        Account account = getAccount(pixData.accountId());
+        if(account.getBalance() >= pixData.amount()){
+            Account pixAccount = getAccount(pixData.pixAccountId());
+            account.setBalance(account.getBalance() - pixData.amount());
+            pixAccount.setBalance(pixAccount.getBalance() + pixData.amount());
             return ResponseEntity.ok(account);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");

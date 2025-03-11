@@ -102,4 +102,30 @@ public class AccountController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/account/pix")
+    public ResponseEntity<Account> transferPix(@RequestParam int accountId, @RequestParam int pixAccountId, @RequestParam Double amount) {
+        Optional<Account> accountEntity = repository.stream().
+                filter(account -> account.getAccountId() == accountId).
+                findFirst();
+
+        if(accountEntity.isPresent()){
+            Account account = accountEntity.get();
+            if(account.getBalance() >= amount){
+                Optional<Account> pixAccountEntity = repository.stream().
+                        filter(account1 -> account1.getAccountId() == pixAccountId).
+                        findFirst();
+                if(pixAccountEntity.isPresent()){
+                    Account pixAccount = pixAccountEntity.get();
+                    account.setBalance(account.getBalance() - amount);
+                    pixAccount.setBalance(pixAccount.getBalance() + amount);
+                    return ResponseEntity.ok(account);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PIX account not found");
+                }
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

@@ -83,4 +83,23 @@ public class AccountController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/account/withdraw")
+    public ResponseEntity<Account> withdraw(@RequestParam int accountId, @RequestParam Double amount) {
+        Optional<Account> accountEntity = repository.stream().
+                filter(account -> account.getAccountId() == accountId).
+                findFirst();
+
+        if(accountEntity.isPresent()){
+            Account account = accountEntity.get();
+            if(account.getBalance() >= amount){
+                account.setBalance(account.getBalance() - amount);
+                return ResponseEntity.ok(account);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

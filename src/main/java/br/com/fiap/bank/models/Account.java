@@ -13,18 +13,18 @@ public class Account {
     private String agency;
     private String holderName;
     private String holderCpf;
-    private Double initialBalance;
+    private Double balance;
     private LocalDate openingDate;
     private Boolean isActive;
     private EAccountType accountType;
 
-    public Account(int accountId, String accountNumber, String agency, String holderName, String holderCpf, Double initialBalance,  LocalDate openingDate, Boolean isActive, EAccountType accountType) {
+    public Account(int accountId, String accountNumber, String agency, String holderName, String holderCpf, Double balance,  LocalDate openingDate, Boolean isActive, EAccountType accountType) {
         this.accountId = Math.abs(new Random().nextInt());
         this.accountNumber = accountNumber;
         this.agency = agency;
         this.holderName = holderName;
         this.holderCpf = holderCpf;
-        this.initialBalance = initialBalance;
+        this.balance = balance;
         this.openingDate = LocalDate.now();
         this.isActive = isActive;
         this.accountType = accountType;
@@ -34,8 +34,12 @@ public class Account {
         isActive = active;
     }
 
-    public Double getInitialBalance() {
-        return initialBalance;
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public Double getBalance() {
+        return balance;
     }
 
     public int getAccountId() {

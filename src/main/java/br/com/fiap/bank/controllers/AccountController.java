@@ -28,7 +28,7 @@ public class AccountController {
         if(account.getHolderCpf() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF is required");
         }
-        if(account.getInitialBalance() < 0){
+        if(account.getBalance() < 0){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Initial balance must be positive");
         }
         account.setActive(true);
@@ -63,6 +63,21 @@ public class AccountController {
         if(accountEntity.isPresent()){
             Account account = accountEntity.get();
             account.setActive(false);
+            return ResponseEntity.ok(account);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/account/deposit")
+    public ResponseEntity<Account> deposit(@RequestParam int accountId, @RequestParam Double amount) {
+        Optional<Account> accountEntity = repository.stream().
+                filter(account -> account.getAccountId() == accountId).
+                findFirst();
+
+        if(accountEntity.isPresent()){
+            Account account = accountEntity.get();
+            account.setBalance(account.getBalance() + amount);
             return ResponseEntity.ok(account);
         }
 

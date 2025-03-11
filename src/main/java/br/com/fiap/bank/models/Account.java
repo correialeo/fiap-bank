@@ -11,18 +11,27 @@ public class Account {
     private String agency;
     private String holderName;
     private String holderCpf;
-    private LocalDate openingDate;
+    private Double initialBalance;
+    private LocalDate openingDate = LocalDate.now();
     private Boolean isActive;
     private EAccountType accountType;
 
-    public Account(String accountNumber, String agency, String holderName, String holderCpf, LocalDate openingDate, Boolean isActive, EAccountType accountType) {
+    public Account(String accountNumber, String agency, String holderName, String holderCpf, Double initialBalance, Boolean isActive, EAccountType accountType) {
         this.accountNumber = accountNumber;
         this.agency = agency;
         this.holderName = holderName;
         this.holderCpf = holderCpf;
-        this.openingDate = openingDate;
+        this.initialBalance = initialBalance;
         this.isActive = isActive;
         this.accountType = accountType;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Double getInitialBalance() {
+        return initialBalance;
     }
 
     public String getAccountNumber() {

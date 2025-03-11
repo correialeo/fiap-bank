@@ -53,4 +53,19 @@ public class AccountController {
                 findFirst();
         return accountEntity.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PutMapping("account/inactivate")
+    public ResponseEntity<Account> inactivateAccount(@RequestParam int accountId) {
+        Optional<Account> accountEntity = repository.stream().
+                filter(account -> account.getAccountId() == accountId).
+                findFirst();
+
+        if(accountEntity.isPresent()){
+            Account account = accountEntity.get();
+            account.setActive(false);
+            return ResponseEntity.ok(account);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

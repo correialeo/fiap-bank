@@ -1,5 +1,6 @@
 package br.com.fiap.bank.controllers;
 
+import br.com.fiap.bank.DTOs.WithdrawDepositDTO;
 import br.com.fiap.bank.models.Account;
 import br.com.fiap.bank.DTOs.PixDTO;
 import org.slf4j.Logger;
@@ -67,19 +68,19 @@ public class AccountController {
     }
 
     @PutMapping("/account/deposit")
-    public ResponseEntity<Account> deposit(@RequestParam int accountId, @RequestParam Double amount) {
+    public ResponseEntity<Account> deposit(@RequestBody WithdrawDepositDTO depositData) {
         log.info("Deposit request");
-        Account account = getAccount(accountId);
-        account.setBalance(account.getBalance() + amount);
+        Account account = getAccount(depositData.accountId());
+        account.setBalance(account.getBalance() + depositData.amount());
         return ResponseEntity.ok(account);
     }
 
     @PutMapping("/account/withdraw")
-    public ResponseEntity<Account> withdraw(@RequestParam int accountId, @RequestParam Double amount) {
+    public ResponseEntity<Account> withdraw(@RequestBody WithdrawDepositDTO withdrawData) {
         log.info("Withdraw request");
-        Account account = getAccount(accountId);
-        if(account.getBalance() >= amount){
-            account.setBalance(account.getBalance() - amount);
+        Account account = getAccount(withdrawData.accountId());
+        if(account.getBalance() >= withdrawData.amount()){
+            account.setBalance(account.getBalance() - withdrawData.amount());
             return ResponseEntity.ok(account);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");

@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     @PostMapping("/account")
-    public ResponseEntity<Account> createAccount (Account account) {
+    public ResponseEntity<Account> createAccount (@RequestBody Account account) {
         if(account.getHolderName() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name is required");
         }
@@ -42,14 +42,14 @@ public class AccountController {
         return ResponseEntity.status(201).body(account);
     }
 
-    @GetMapping("/account/id")
-    public ResponseEntity<Account> getAccountById(@RequestParam int accountId) {
+    @GetMapping("/account/id/{accountId}")
+    public ResponseEntity<Account> getAccountById(@PathVariable int accountId) {
         log.info("Retrieving account by id: " + accountId);
         return ResponseEntity.status(200).body(getAccount(accountId));
     }
 
-    @GetMapping("/account/cpf")
-    public ResponseEntity<Account> getAccountByCpf(@RequestParam String cpf) {
+    @GetMapping("/account/cpf/{cpf}")
+    public ResponseEntity<Account> getAccountByCpf(@PathVariable String cpf) {
         log.info("Retrieving account by cpf: " + cpf);
         Optional<Account> accountEntity = repository.stream().
                 filter(account -> account.getHolderCpf().equals(cpf)).

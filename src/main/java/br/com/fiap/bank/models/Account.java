@@ -3,8 +3,10 @@ package br.com.fiap.bank.models;
 import br.com.fiap.bank.utils.EAccountType;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Account {
+    private int accountId;
     // 12345678-9
     private String accountNumber;
     //1234-5
@@ -12,16 +14,18 @@ public class Account {
     private String holderName;
     private String holderCpf;
     private Double initialBalance;
-    private LocalDate openingDate = LocalDate.now();
+    private LocalDate openingDate;
     private Boolean isActive;
     private EAccountType accountType;
 
-    public Account(String accountNumber, String agency, String holderName, String holderCpf, Double initialBalance, Boolean isActive, EAccountType accountType) {
+    public Account(int accountId, String accountNumber, String agency, String holderName, String holderCpf, Double initialBalance,  LocalDate openingDate, Boolean isActive, EAccountType accountType) {
+        this.accountId = Math.abs(new Random().nextInt());
         this.accountNumber = accountNumber;
         this.agency = agency;
         this.holderName = holderName;
         this.holderCpf = holderCpf;
         this.initialBalance = initialBalance;
+        this.openingDate = LocalDate.now();
         this.isActive = isActive;
         this.accountType = accountType;
     }
@@ -32,6 +36,10 @@ public class Account {
 
     public Double getInitialBalance() {
         return initialBalance;
+    }
+
+    public int getAccountId() {
+        return accountId;
     }
 
     public String getAccountNumber() {

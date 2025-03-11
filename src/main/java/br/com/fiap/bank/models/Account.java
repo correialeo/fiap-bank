@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Random;
 
 public class Account {
-    private int accountId;
+    private Integer accountId;
     // 12345678-9
     private String accountNumber;
     //1234-5
@@ -18,7 +18,7 @@ public class Account {
     private Boolean isActive;
     private EAccountType accountType;
 
-    public Account(int accountId, String accountNumber, String agency, String holderName, String holderCpf, Double balance,  LocalDate openingDate, Boolean isActive, EAccountType accountType) {
+    public Account(Integer accountId, String accountNumber, String agency, String holderName, String holderCpf, Double balance,  LocalDate openingDate, Boolean isActive, EAccountType accountType) {
         this.accountId = Math.abs(new Random().nextInt());
         this.accountNumber = accountNumber;
         this.agency = agency;
@@ -42,7 +42,7 @@ public class Account {
         return balance;
     }
 
-    public int getAccountId() {
+    public Integer getAccountId() {
         return accountId;
     }
 

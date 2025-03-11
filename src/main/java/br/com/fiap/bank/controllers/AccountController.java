@@ -38,16 +38,11 @@ public class AccountController {
 
     @GetMapping("/account/id")
     public ResponseEntity<Account> getAccountById(@RequestParam int accountId) {
-
-        Optional<Account> accountEntity = repository.stream().
-                    filter(account -> account.getAccountId() == accountId).
-                    findFirst();
-        return accountEntity.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.status(200).body(getAccount(accountId));
     }
 
     @GetMapping("/account/cpf")
     public ResponseEntity<Account> getAccountByCpf(@RequestParam String cpf) {
-
         Optional<Account> accountEntity = repository.stream().
                 filter(account -> account.getHolderCpf().equals(cpf)).
                 findFirst();
@@ -56,76 +51,46 @@ public class AccountController {
 
     @PutMapping("account/inactivate")
     public ResponseEntity<Account> inactivateAccount(@RequestParam int accountId) {
-        Optional<Account> accountEntity = repository.stream().
-                filter(account -> account.getAccountId() == accountId).
-                findFirst();
-
-        if(accountEntity.isPresent()){
-            Account account = accountEntity.get();
-            account.setActive(false);
-            return ResponseEntity.ok(account);
-        }
-
-        return ResponseEntity.notFound().build();
+        Account account = getAccount(accountId);
+        account.setActive(false);
+        return ResponseEntity.ok(account);
     }
 
     @PutMapping("/account/deposit")
     public ResponseEntity<Account> deposit(@RequestParam int accountId, @RequestParam Double amount) {
-        Optional<Account> accountEntity = repository.stream().
-                filter(account -> account.getAccountId() == accountId).
-                findFirst();
-
-        if(accountEntity.isPresent()){
-            Account account = accountEntity.get();
-            account.setBalance(account.getBalance() + amount);
-            return ResponseEntity.ok(account);
-        }
-
-        return ResponseEntity.notFound().build();
+        Account account = getAccount(accountId);
+        account.setBalance(account.getBalance() + amount);
+        return ResponseEntity.ok(account);
     }
 
     @PutMapping("/account/withdraw")
     public ResponseEntity<Account> withdraw(@RequestParam int accountId, @RequestParam Double amount) {
-        Optional<Account> accountEntity = repository.stream().
-                filter(account -> account.getAccountId() == accountId).
-                findFirst();
-
-        if(accountEntity.isPresent()){
-            Account account = accountEntity.get();
-            if(account.getBalance() >= amount){
-                account.setBalance(account.getBalance() - amount);
-                return ResponseEntity.ok(account);
-            } else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");
-            }
+        Account account = getAccount(accountId);
+        if(account.getBalance() >= amount){
+            account.setBalance(account.getBalance() - amount);
+            return ResponseEntity.ok(account);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");
         }
-
-        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/account/pix")
     public ResponseEntity<Account> transferPix(@RequestParam int accountId, @RequestParam int pixAccountId, @RequestParam Double amount) {
-        Optional<Account> accountEntity = repository.stream().
-                filter(account -> account.getAccountId() == accountId).
-                findFirst();
-
-        if(accountEntity.isPresent()){
-            Account account = accountEntity.get();
-            if(account.getBalance() >= amount){
-                Optional<Account> pixAccountEntity = repository.stream().
-                        filter(account1 -> account1.getAccountId() == pixAccountId).
-                        findFirst();
-                if(pixAccountEntity.isPresent()){
-                    Account pixAccount = pixAccountEntity.get();
-                    account.setBalance(account.getBalance() - amount);
-                    pixAccount.setBalance(pixAccount.getBalance() + amount);
-                    return ResponseEntity.ok(account);
-                } else {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PIX account not found");
-                }
-            }
+        Account account = getAccount(accountId);
+        if(account.getBalance() >= amount){
+            Account pixAccount = getAccount(pixAccountId);
+            account.setBalance(account.getBalance() - amount);
+            pixAccount.setBalance(pixAccount.getBalance() + amount);
+            return ResponseEntity.ok(account);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient balance");
         }
+    }
 
-        return ResponseEntity.notFound().build();
+    private Account getAccount(Integer id){
+        return repository.stream()
+                .filter(account -> account.getAccountId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
     }
 }

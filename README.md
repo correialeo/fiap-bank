@@ -2,7 +2,7 @@
 
 ## Introdução
 
-#### Essa API foi desenvolvida usando Spring e Java 17.
+#### Essa API foi desenvolvida usando Spring e Java 17 para a disciplina de Java Advanced.
 #### Este readme contém informações sobre como rodar a aplicação e testar os endpoints da API.
 
 ## Acesso ao Swagger

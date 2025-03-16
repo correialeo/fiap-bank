@@ -1,6 +1,6 @@
 package br.com.fiap.bank.controllers;
 
-import br.com.fiap.bank.DTOs.WithdrawDepositDTO;
+import br.com.fiap.bank.DTOs.TransactionsDTO;
 import br.com.fiap.bank.models.Account;
 import br.com.fiap.bank.DTOs.PixDTO;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/deposit")
-    public ResponseEntity<Account> deposit(@RequestBody WithdrawDepositDTO depositData) {
+    public ResponseEntity<Account> deposit(@RequestBody TransactionsDTO depositData) {
         log.info("Deposit request");
         Account account = getAccount(depositData.accountId());
         account.setBalance(account.getBalance() + depositData.amount());
@@ -76,7 +76,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/withdraw")
-    public ResponseEntity<Account> withdraw(@RequestBody WithdrawDepositDTO withdrawData) {
+    public ResponseEntity<Account> withdraw(@RequestBody TransactionsDTO withdrawData) {
         log.info("Withdraw request");
         Account account = getAccount(withdrawData.accountId());
         if(account.getBalance() >= withdrawData.amount()){

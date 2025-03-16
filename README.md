@@ -58,39 +58,39 @@ O Swagger está configurado no projeto. Ao inicializar a aplicação, você pode
 
 ### 6. Fazer um depósito
 
-- **POST /account/deposit**
+- **POST /account/{accountId}/deposit**
   - Utilizado para depositar saldo em uma conta.
+  - O account id deve ser passado por path.
   - O corpo da requisição deve seguir o seguinte formato:
 
 ```json
 {
-  "accountId": 1073741824,
   "amount": 0.1
 }
 ```
 
 ### 7. Fazer um saque
 
-- **POST /account/withdraw**
+- **POST /account/{accountId}/withdraw**
   - Utilizado para sacar saldo em uma conta.
+  - O account id deve ser passado por path.
   - O corpo da requisição deve seguir o seguinte formato:
 
 ```json
 {
-  "accountId": 1073741824,
   "amount": 0.1 (Não tente roubar nosso banco e retirar mais do que possui)
 }
 ```
 
 ### 8. Realizar um PIX
 
-- **POST /account/pix**
+- **POST /account/{accountId}/pix**
   - Utilizado para realizar uma transfeência via PIX.
+  - O account id deve ser passado por path.
   - O corpo da requisição deve seguir o seguinte formato:
 
 ```json
 {
-  "accountId": 1073741824,
   "pixAccountId": 1073741824,
   "amount": 0.1
 }

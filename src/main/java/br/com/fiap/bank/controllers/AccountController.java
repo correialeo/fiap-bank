@@ -29,15 +29,7 @@ public class AccountController {
 
     @PostMapping("/account")
     public ResponseEntity<Account> createAccount (@RequestBody Account account) {
-        if(account.getHolderName() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name is required");
-        }
-        if(account.getHolderCpf() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF is required");
-        }
-        if(account.getBalance() < 0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Initial balance must be positive");
-        }
+        validateAccount(account);
         log.info("Creating account");
         account.setActive(true);
         repository.add(account);
@@ -106,5 +98,17 @@ public class AccountController {
                 .filter(account -> account.getAccountId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
+    }
+
+    private void validateAccount(Account account){
+        if(account.getHolderName() == null || account.getHolderName().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name is required");
+        }
+        if(account.getHolderCpf() == null || account.getHolderCpf().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF is required");
+        }
+        if(account.getBalance() < 0 || account.getBalance().isNaN()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Initial balance must be a positive value");
+        }
     }
 }

@@ -67,18 +67,18 @@ public class AccountController {
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping("/account/deposit")
-    public ResponseEntity<Account> deposit(@RequestBody TransactionsDTO depositData) {
+    @PostMapping("/account/{accountId}/deposit")
+    public ResponseEntity<Account> deposit(@PathVariable int accountId, @RequestBody TransactionsDTO depositData) {
         log.info("Deposit request");
-        Account account = getAccount(depositData.accountId());
+        Account account = getAccount(accountId);
         account.setBalance(account.getBalance() + depositData.amount());
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping("/account/withdraw")
-    public ResponseEntity<Account> withdraw(@RequestBody TransactionsDTO withdrawData) {
+    @PostMapping("/account/{accountId}/withdraw")
+    public ResponseEntity<Account> withdraw(@PathVariable int accountId, @RequestBody TransactionsDTO withdrawData) {
         log.info("Withdraw request");
-        Account account = getAccount(withdrawData.accountId());
+        Account account = getAccount(accountId);
         if(account.getBalance() >= withdrawData.amount()){
             account.setBalance(account.getBalance() - withdrawData.amount());
             return ResponseEntity.ok(account);
@@ -87,10 +87,10 @@ public class AccountController {
         }
     }
 
-    @PostMapping("/account/pix")
-    public ResponseEntity<Account> transferPix(@RequestBody PixDTO pixData) {
-        log.info("Transfering "+ pixData.amount() +" from account " + pixData.accountId() + " to account " + pixData.pixAccountId());
-        Account account = getAccount(pixData.accountId());
+    @PostMapping("/account/{accountId}/pix")
+    public ResponseEntity<Account> transferPix(@PathVariable int accountId, @RequestBody PixDTO pixData) {
+        log.info("Transfering "+ pixData.amount() +" from account " + accountId + " to account " + pixData.pixAccountId());
+        Account account = getAccount(accountId);
         if(account.getBalance() >= pixData.amount()){
             Account pixAccount = getAccount(pixData.pixAccountId());
             account.setBalance(account.getBalance() - pixData.amount());

@@ -1,6 +1,6 @@
 package br.com.fiap.bank.models;
 
-import br.com.fiap.bank.utils.EAccountType;
+import br.com.fiap.bank.enums.EAccountType;
 
 import java.time.LocalDate;
 import java.util.Random;

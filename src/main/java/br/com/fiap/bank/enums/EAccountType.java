@@ -1,4 +1,4 @@
-package br.com.fiap.bank.utils;
+package br.com.fiap.bank.enums;
 
 public enum EAccountType {
     CORRENTE,

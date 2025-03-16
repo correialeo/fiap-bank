@@ -67,7 +67,7 @@ public class AccountController {
         return ResponseEntity.ok(account);
     }
 
-    @PutMapping("/account/deposit")
+    @PostMapping("/account/deposit")
     public ResponseEntity<Account> deposit(@RequestBody WithdrawDepositDTO depositData) {
         log.info("Deposit request");
         Account account = getAccount(depositData.accountId());
@@ -75,7 +75,7 @@ public class AccountController {
         return ResponseEntity.ok(account);
     }
 
-    @PutMapping("/account/withdraw")
+    @PostMapping("/account/withdraw")
     public ResponseEntity<Account> withdraw(@RequestBody WithdrawDepositDTO withdrawData) {
         log.info("Withdraw request");
         Account account = getAccount(withdrawData.accountId());
@@ -87,7 +87,7 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/account/pix")
+    @PostMapping("/account/pix")
     public ResponseEntity<Account> transferPix(@RequestBody PixDTO pixData) {
         log.info("Transfering "+ pixData.amount() +" from account " + pixData.accountId() + " to account " + pixData.pixAccountId());
         Account account = getAccount(pixData.accountId());

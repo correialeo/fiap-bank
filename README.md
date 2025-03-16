@@ -58,7 +58,7 @@ O Swagger está configurado no projeto. Ao inicializar a aplicação, você pode
 
 ### 6. Fazer um depósito
 
-- **PUT /account/deposit**
+- **POST /account/deposit**
   - Utilizado para depositar saldo em uma conta.
   - O corpo da requisição deve seguir o seguinte formato:
 
@@ -71,7 +71,7 @@ O Swagger está configurado no projeto. Ao inicializar a aplicação, você pode
 
 ### 7. Fazer um saque
 
-- **PUT /account/withdraw**
+- **POST /account/withdraw**
   - Utilizado para sacar saldo em uma conta.
   - O corpo da requisição deve seguir o seguinte formato:
 
@@ -84,7 +84,7 @@ O Swagger está configurado no projeto. Ao inicializar a aplicação, você pode
 
 ### 8. Realizar um PIX
 
-- **PUT /account/pix**
+- **POST /account/pix**
   - Utilizado para realizar uma transfeência via PIX.
   - O corpo da requisição deve seguir o seguinte formato:
 
